@@ -12,4 +12,4 @@ what's already in the file.
 arr=scio.read(filename)
 return as a numpy array of the same dtype the set of arrays written.
 
-Currently supported dtypes are int32, int64, float32, and float64.
+Currently supported dtypes are int32, int64, uint32, uint64, float32, and float64.

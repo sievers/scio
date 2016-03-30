@@ -108,7 +108,10 @@ def int2dtype(myint):
         return 'int32'
     if (myint==-8):
         return 'int64'
-    
+    if (myint==-104):
+        return 'uint32'
+    if (myint==-108):
+        return 'uint64'
     
 def dtype2int(dtype_str):
     
@@ -131,6 +134,14 @@ def dtype2int(dtype_str):
     aa=numpy.zeros(1,dtype='int64')
     if (dtype_str==aa.dtype):
         return -8
+
+    aa=numpy.zeros(1,dtype='uint32')
+    if (dtype_str==aa.dtype):
+        return -104
+
+    aa=numpy.zeros(1,dtype='uint64')
+    if (dtype_str==aa.dtype):
+        return -108
     
     print 'unknown dtype'
     return 0
