@@ -52,7 +52,7 @@ class scio:
             arr.tofile(self.fid)
             self.fid.flush()
         else:
-            print 'dtype mismatch in scio.append'
+            print 'dtype mismatch in scio.append on file ' + self.fname
         
             
 #def append(arr,fname,overwrite=False):
