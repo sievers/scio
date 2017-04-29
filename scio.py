@@ -2,6 +2,7 @@ import numpy
 import os
 import bz2
 import gzip
+import multiprocessing
 
     
 
@@ -184,6 +185,16 @@ def read(fname):
         mat=numpy.cumsum(mat,0)
 
     return mat
+
+def read_files(fnames,ncpu=0):
+    if ncpu==0:
+        ncpu=multiprocessing.cpu_count()
+    p=multiprocessing.Pool(ncpu)
+    data=p.map(read,fnames)
+
+    return data
+
+
 
 def int2dtype(myint):
     if (myint==8):
