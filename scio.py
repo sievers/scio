@@ -175,7 +175,11 @@ def read(fname,strict=False):
                 try:
                     mystr=_read_file_as_string(fname)
                     if len(mystr)>0:
-                        return _read_from_string(mystr)
+                        try:  #try/except loop added by JLS 11 June 2019 to catch cases where string length is unexpected
+                            return _read_from_string(mystr)
+                        except:
+                            print 'File ',fname,' appears to be garbled.'
+                            return None
                     else:
                         return None
                 except:
