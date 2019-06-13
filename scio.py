@@ -178,7 +178,7 @@ def read(fname,strict=False):
                         try:  #try/except loop added by JLS 11 June 2019 to catch cases where string length is unexpected
                             return _read_from_string(mystr)
                         except:
-                            print 'File ',fname,' appears to be garbled.'
+                            print 'File ',fname,' appears to be garbled when parsing string of length ',len(mystr)
                             return None
                     else:
                         return None
