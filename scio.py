@@ -118,11 +118,12 @@ def _read_from_string(mystr):
         ndim=-1*ndim
     else:
         diff=False
-
+    print 'ndim is ',ndim
     sz=numpy.fromstring(mystr[icur:icur+4*ndim],'int32')
     icur=icur+4*ndim
     mytype=numpy.fromstring(mystr[icur:icur+4],'int32')[0]
     icur=icur+4
+    print 'icur and len are ',icur,len(mystr)
     vec=numpy.fromstring(mystr[icur:],dtype=int2dtype(mytype))
 
     nmat=vec.size/numpy.product(sz)
@@ -150,7 +151,7 @@ def _read_file_as_string(fname):
         return mystr
 
     #if we get here, assume it's raw binary
-    f=open(fname)
+    f=open(fname,'rb')
     mystr=f.read()
     f.close()
     return mystr
