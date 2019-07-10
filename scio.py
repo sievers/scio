@@ -3,7 +3,7 @@ import os
 import bz2
 import gzip
 import multiprocessing
-
+import time
     
 
 class scio:
@@ -123,6 +123,14 @@ def _read_from_string(mystr):
     icur=icur+4*ndim
     mytype=numpy.fromstring(mystr[icur:icur+4],'int32')[0]
     icur=icur+4
+    #check for file size sanity
+    bytes_per_frame=int2nbyte(mytype)*numpy.product(sz)
+    cur_bytes=len(mystr)-icur
+    n_to_cut=numpy.remainder(cur_bytes,bytes_per_frame)
+    if n_to_cut>0:
+        print 'We have a byte mismatch in reading scio file.  Truncating ' + repr(n_to_cut) + ' bytes.'
+        vec=vec[:-n_to_cut]
+
     vec=numpy.fromstring(mystr[icur:],dtype=int2dtype(mytype))
 
     nmat=vec.size/numpy.product(sz)
@@ -180,6 +188,7 @@ def read(fname,strict=False):
                         return None
                 except:
                     pass
+    return None
     if fname[-4:]=='.bz2':
         return read_bz2(fname)
     f=open(fname)
@@ -206,11 +215,17 @@ def read(fname,strict=False):
     return mat
 
 def read_files(fnames,ncpu=0):
+    t1=time.time()
     if ncpu==0:
         ncpu=multiprocessing.cpu_count()
     p=multiprocessing.Pool(ncpu)
     data=p.map(read,fnames)
-
+    #without the p.terminate, the pool seems to last, which can cause the system to run out of processes.
+    #this isn't what the documentation says should happen (terminate is supposed to get called when p 
+    #gets garbage collected), but oh well...
+    p.terminate()      
+    t2=time.time()
+    #print 'took ',t2-t1, ' seconds to read files in scio.'
     return data
 
 
@@ -229,6 +244,12 @@ def int2dtype(myint):
     if (myint==-108):
         return 'uint64'
     
+def int2nbyte(myint):
+    nbyte=numpy.abs(myint)
+    if nbyte>100:
+        nbyte=nbyte-100
+    return nbyte
+
 def dtype2int(dtype_str):
     
     if (type(dtype_str)!=numpy.dtype):
