@@ -118,11 +118,12 @@ def _read_from_string(mystr):
         ndim=-1*ndim
     else:
         diff=False
-
+    print 'ndim is ',ndim
     sz=numpy.fromstring(mystr[icur:icur+4*ndim],'int32')
     icur=icur+4*ndim
     mytype=numpy.fromstring(mystr[icur:icur+4],'int32')[0]
     icur=icur+4
+
     #check for file size sanity
     bytes_per_frame=int2nbyte(mytype)*numpy.product(sz)
     cur_bytes=len(mystr)-icur
@@ -158,7 +159,7 @@ def _read_file_as_string(fname):
         return mystr
 
     #if we get here, assume it's raw binary
-    f=open(fname)
+    f=open(fname,'rb')
     mystr=f.read()
     f.close()
     return mystr
@@ -183,7 +184,11 @@ def read(fname,strict=False):
                 try:
                     mystr=_read_file_as_string(fname)
                     if len(mystr)>0:
-                        return _read_from_string(mystr)
+                        try:  #try/except loop added by JLS 11 June 2019 to catch cases where string length is unexpected
+                            return _read_from_string(mystr)
+                        except:
+                            print 'File ',fname,' appears to be garbled when parsing string of length ',len(mystr)
+                            return None
                     else:
                         return None
                 except:
