@@ -118,7 +118,7 @@ def _read_from_string(mystr):
         ndim=-1*ndim
     else:
         diff=False        
-    print 'ndim is ',ndim
+    #print 'ndim is ',ndim
     sz=numpy.fromstring(mystr[icur:icur+4*ndim],'int32')
     icur=icur+4*ndim
     mytype=numpy.fromstring(mystr[icur:icur+4],'int32')[0]
@@ -129,10 +129,10 @@ def _read_from_string(mystr):
     cur_bytes=len(mystr)-icur
     n_to_cut=numpy.remainder(cur_bytes,bytes_per_frame)
     if n_to_cut>0:
-        print 'current len: ',len(mystr)
+        #print 'current len: ',len(mystr)
         print 'We have a byte mismatch in reading scio file.  Truncating ' + repr(n_to_cut) + ' bytes.'
         mystr=mystr[:-n_to_cut]
-        print 'new len: ',len(mystr)
+        #print 'new len: ',len(mystr)
         
     vec=numpy.fromstring(mystr[icur:],dtype=int2dtype(mytype))
 
