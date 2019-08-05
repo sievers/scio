@@ -32,7 +32,7 @@ class scio:
             
     def __del__(self):
         if self.closed==False:
-            print 'closing scio file ' + self.fname
+            print('closing scio file ' + self.fname)
             self.fid.flush()        
             self.fid.close()
             self.closed=True
@@ -65,7 +65,7 @@ class scio:
         if (arr.shape==self.shape):
             pass
         else:
-            print "shape mismatch in scio.append"            
+            print("shape mismatch in scio.append")
         if (arr.dtype==self.dtype):
             if (self.diff):
                 if self.last is None:
@@ -78,7 +78,7 @@ class scio:
             arr_use.tofile(self.fid)
             self.fid.flush()
         else:
-            print 'dtype mismatch in scio.append on file ' + self.fname
+            print('dtype mismatch in scio.append on file ' + self.fname)
         
             
 #def append(arr,fname,overwrite=False):
@@ -130,7 +130,7 @@ def _read_from_string(mystr):
     n_to_cut=numpy.remainder(cur_bytes,bytes_per_frame)
     if n_to_cut>0:
         #print 'current len: ',len(mystr)
-        print 'We have a byte mismatch in reading scio file.  Truncating ' + repr(n_to_cut) + ' bytes.'
+        print('We have a byte mismatch in reading scio file.  Truncating ' + repr(n_to_cut) + ' bytes.')
         mystr=mystr[:-n_to_cut]
         #print 'new len: ',len(mystr)
         
@@ -189,7 +189,7 @@ def read(fname,strict=False):
                         try:  #try/except loop added by JLS 11 June 2019 to catch cases where string length is unexpected
                             return _read_from_string(mystr)
                         except:
-                            print 'File ',fname,' appears to be garbled when parsing string of length ',len(mystr)
+                            print('File ',fname,' appears to be garbled when parsing string of length ',len(mystr))
                             return None
                     else:
                         return None
@@ -287,6 +287,6 @@ def dtype2int(dtype_str):
     if (dtype_str==aa.dtype):
         return -108
     
-    print 'unknown dtype'
+    print('unknown dtype')
     return 0
 
